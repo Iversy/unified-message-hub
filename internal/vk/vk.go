@@ -14,14 +14,18 @@ func main() {
 	vk := api.NewVK(token)
 
 	parameters := api.Params{
-		"chat_id": 75,
+		"count": 50,
 	}
 
-	messages, err := vk.MessagesGetChat(parameters)
+	chats, err := vk.MessagesGetConversations(parameters)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(messages.Title)
+	// fmt.Print(chats.Items[len(chats.Items)-1].Conversation.ChatSettings.Title)
+	for i, item := range chats.Items {
+		fmt.Println(i, item.Conversation.ChatSettings.Title)
+	}
+	// for item, err := chats.Items {}
 
 	// // get information about the group
 	// group, err := vk.GroupsGetByID(nil)
