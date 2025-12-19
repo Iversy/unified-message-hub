@@ -5,6 +5,6 @@ import (
 )
 
 func Handle(message *models.Message) (models.Message, error) {
-
+	
 	return *models.NewMessage(), nil
 }
