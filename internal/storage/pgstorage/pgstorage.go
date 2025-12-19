@@ -25,25 +25,5 @@ func NewPGStorge(connString string) (*PGstorage, error) {
 	storage := &PGstorage{
 		db: db,
 	}
-	err = storage.initTables()
-	if err != nil {
-		return nil, err
-	}
-
 	return storage, nil
-}
-
-func (s *PGstorage) initTables() error {
-	sql := fmt.Sprintf(`
-    CREATE TABLE IF NOT EXISTS %v (
-        %v SERIAL PRIMARY KEY,
-        %v VARCHAR(100) NOT NULL,
-        %v VARCHAR(255) UNIQUE NOT NULL,
-        %v INT
-    )`, tableName, IDСolumnName, NameСolumnName, EmailСolumnName, AgeСolumnName)
-	_, err := s.db.Exec(context.Background(), sql)
-	if err != nil {
-		return err
-	}
-	return nil
 }
