@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"go.yaml.in/yaml/v4"
+	"github.com/goccy/go-yaml"
 )
 
 type Config struct {
@@ -14,18 +14,19 @@ type Config struct {
 }
 
 type DatabaseConfig struct {
-	Host           string `yaml:"host"`
-	Port           int    `yaml:"port"`
-	Username       string `yaml:"username"`
-	Password       string `yaml:"password"`
-	DBName         string `yaml:"name"`
-	SSLMode        string `yaml:"ssl_mode"`
-	// MigrationsPath string `yaml:"migrations_path"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	DBName   string `yaml:"name"`
+	SSLMode  string `yaml:"ssl_mode"`
 }
 
 type KafkaConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
+	Host                   string   `yaml:"host"`
+	Port                   string   `yaml:"port"`
+	Topics                 []string `yaml:"topic"`
+	MessageCreateTopicName string   `yaml:"message_create_topic_name"`
 }
 
 type Web struct {
