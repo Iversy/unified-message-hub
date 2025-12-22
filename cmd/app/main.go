@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/Iversy/unified-message-hub/config"
 	"github.com/Iversy/unified-message-hub/internal/bootstrap"
@@ -10,13 +9,18 @@ import (
 
 func main() {
 
-	cfg, err := config.LoadConfig(os.Getenv("configPath"))
+	cfg, err := config.LoadConfig("config_norm.yaml")
 	if err != nil {
 		panic(fmt.Sprintf("ошибка парсинга конфига, %v", err))
 	}
 
-	bootstrap.InitPGStorage(cfg)
-	bootstrap.InitMessageCreateConsumer(cfg)
+	storage := bootstrap.InitPGStorage(cfg)
+	messageService := bootstrap.InitMessageService(storage)
+	messageProcessor := bootstrap.InitMessageProcessor(messageService)
+	kafkaConsumer := bootstrap.InitMessageCreateConsumer(cfg, messageProcessor)
+	kafkaProducer := bootstrap.InitMessageProducer(cfg)
+
+	bootstrap.AppRun(kafkaProducer, kafkaConsumer)
 	//bootstrap.AppRun()
 	//studentService := bootstrap.InitStudentService(studentsStorage, cfg)
 	//studentsInfoProcessor := bootstrap.InitStudentsInfoProcessor(studentService)

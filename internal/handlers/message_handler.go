@@ -23,7 +23,7 @@ func NewMessageHandler(messageProccessor messageProccessor) *MessageHandlerImpl 
 }
 
 func (mh *MessageHandlerImpl) HandleMessage(ctx context.Context, msg *models.Message) error {
-	key := fmt.Sprintf("%s%s", msg.ChatId, msg.Timestamp)
+	key := fmt.Sprintf("%v%v", msg.ChatId, msg.Timestamp)
 	messageJSON, err := json.Marshal(msg)
 	if err != nil {
 		return err

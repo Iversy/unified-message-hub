@@ -19,14 +19,13 @@ type Timestamp struct {
 }
 
 type Message struct {
-	// ID         int	//?optional
-	Client     Source `json:"source"`
-	Sender     string `json:"sender"`
-	ChatId     int    `json:"chat_id"`
-	Text       string `json:"text"`
-	Attachment string `json:"attachment"`
-	Timestamp  string `json:"timestamp"` // Timestamp
-
+	// Attachment string `json:"attachment"`
+	// ID        int    `json:"id"` //?optional
+	Client    Source `json:"source"`
+	Sender    string `json:"sender"`
+	ChatId    int    `json:"chat_id"`
+	Text      string `json:"text"`
+	Timestamp string `json:"timestamp"`
 }
 
 func NewMessage() *Message {

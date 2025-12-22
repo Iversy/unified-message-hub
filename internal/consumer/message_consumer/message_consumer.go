@@ -16,9 +16,9 @@ type MessageCreateConsumer struct {
 	topicName        string
 }
 
-func NewMessageCreateConsumer(messageProcessor *messageProcessor, kafkaBroker []string, topicName string) *MessageCreateConsumer {
+func NewMessageCreateConsumer(messageProcessor messageProcessor, kafkaBroker []string, topicName string) *MessageCreateConsumer {
 	return &MessageCreateConsumer{
-		messageProcessor: *messageProcessor,
+		messageProcessor: messageProcessor,
 		kafkaBroker:      kafkaBroker,
 		topicName:        topicName,
 	}
