@@ -11,12 +11,18 @@ type MessageStorage interface {
 	CreateMessage(ctx context.Context, messageInfos []*models.Message) error
 }
 
-type MessageService struct {
-	messageStorage MessageStorage
+type MessageProducer interface {
+	ProduceMessage(ctx context.Context, key, value []byte, headers map[string]string) error
 }
 
-func NewMessageService(ctx context.Context, messageStorage MessageStorage) *MessageService {
+type MessageService struct {
+	messageStorage  MessageStorage
+	messageProducer MessageProducer
+}
+
+func NewMessageService(ctx context.Context, messageStorage MessageStorage, messageProducer MessageProducer) *MessageService {
 	return &MessageService{
-		messageStorage: messageStorage,
+		messageStorage:  messageStorage,
+		messageProducer: messageProducer,
 	}
 }

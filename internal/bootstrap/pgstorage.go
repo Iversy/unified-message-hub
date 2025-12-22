@@ -14,7 +14,7 @@ func InitPGStorage(cfg *config.Config) *pgstorage.PGstorage {
 		cfg.Database.Username, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.DBName)
 	storage, err := pgstorage.NewPGStorage(connectionString)
 	if err != nil {
-		log.Panic(fmt.Sprintf("ошибка инициализации БД, %v", err))
+		log.Panicf("ошибка инициализации БД, %v", err)
 		panic(err)
 	}
 	return storage

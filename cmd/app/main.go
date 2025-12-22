@@ -15,12 +15,12 @@ func main() {
 	}
 
 	storage := bootstrap.InitPGStorage(cfg)
-	messageService := bootstrap.InitMessageService(storage)
+	kafkaProducer := bootstrap.InitMessageProducer(cfg)
+	messageService := bootstrap.InitMessageService(storage, kafkaProducer)
 	messageProcessor := bootstrap.InitMessageProcessor(messageService)
 	kafkaConsumer := bootstrap.InitMessageCreateConsumer(cfg, messageProcessor)
-	kafkaProducer := bootstrap.InitMessageProducer(cfg)
-
-	bootstrap.AppRun(kafkaProducer, kafkaConsumer)
+	serviceAPI := bootstrap.InitMessageServiceAPI(messageService, kafkaProducer)
+	bootstrap.AppRun(serviceAPI, kafkaConsumer)
 	//bootstrap.AppRun()
 	//studentService := bootstrap.InitStudentService(studentsStorage, cfg)
 	//studentsInfoProcessor := bootstrap.InitStudentsInfoProcessor(studentService)

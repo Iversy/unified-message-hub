@@ -13,7 +13,7 @@ import (
 func (c *MessageCreateConsumer) Consume(ctx context.Context) {
 	r := kafka.NewReader(kafka.ReaderConfig{
 		Brokers:           c.kafkaBroker,
-		GroupID:           "MessageService_group",
+		Partition:         1,
 		Topic:             c.topicName,
 		HeartbeatInterval: 3 * time.Second,
 		SessionTimeout:    30 * time.Second,

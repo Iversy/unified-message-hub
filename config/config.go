@@ -23,10 +23,9 @@ type DatabaseConfig struct {
 }
 
 type KafkaConfig struct {
-	Host                   string   `yaml:"host"`
-	Port                   string   `yaml:"port"`
-	Topics                 []string `yaml:"topic"`
-	MessageCreateTopicName string   `yaml:"message_create_topic_name"`
+	Host                   string `yaml:"host"`
+	Port                   string `yaml:"port"`
+	MessageCreateTopicName string `yaml:"message_create_topic_name"`
 }
 
 type Web struct {
