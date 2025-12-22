@@ -38,13 +38,13 @@ func GetStructTag(s interface{}) []string {
 	var tags []string
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
-		// value := v.Field(i)
+		value := v.Field(i)
 		tag := string(field.Tag)
 		tag = strings.Split(tag, ":")[1]
 		tag = strings.Trim(tag, `"`)
 		tags = append(tags, tag)
-		// fmt.Printf("  %d. Name: %s, Type: %v, Value: %v, Tag: %v\n",
-		// i+1, field.Name, field.Type, value.Interface(), field.Tag)
+		fmt.Printf("  %d. Name: %s, Type: %v, Value: %v, Tag: %v\n",
+			i+1, field.Name, field.Type, value.Interface(), field.Tag)
 	}
 	return tags
 }

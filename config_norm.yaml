@@ -3,7 +3,7 @@ database:
   port: 5432
   username: postgres
   password: rootpassword
-  name: "go"
+  name: postgres
   ssl_mode: "disable"
   # migrations_path: "./internal/storage/pgstorage/migrations"
 
