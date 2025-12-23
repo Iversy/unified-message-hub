@@ -9,3 +9,8 @@ CREATE TABLE routing_rules (
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+SELECT create_distributed_table(
+    'routing_rules',
+     'id'
+    );

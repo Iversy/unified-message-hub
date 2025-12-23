@@ -1,0 +1,9 @@
+curl -X POST http://localhost:8080/api/send \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source": 2,
+    "sender": "a",
+    "chat_id": 456,
+    "text": "Hello Worlaaaaaaaaaaaaaaaada!",
+    "timestamp": "2024-01-15T10:20:00Z"
+  }'

@@ -7,3 +7,8 @@ CREATE TABLE platform_connections (
     last_sync_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+SELECT create_distributed_table(
+    'platform_connections',
+     'id'
+    );

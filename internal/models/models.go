@@ -19,7 +19,7 @@ type Timestamp struct {
 }
 
 type Message struct {
-	ID        int    `json:"id"` //?optional
+	// ID        int    `json:"id"` //?optional
 	Client    Source `json:"source"`
 	Sender    string `json:"sender"`
 	ChatId    int    `json:"chat_id"`

@@ -25,7 +25,6 @@ func (storage *PGstorage) CreateMessage(ctx context.Context, messageInfos []*mod
 func (storage *PGstorage) upsertQueryMessageAudit(messageInfos []*models.Message) squirrel.Sqlizer {
 	infos := lo.Map(messageInfos, func(info *models.Message, _ int) *MessageAudit {
 		return &MessageAudit{
-			ID:             uint64(info.ID),
 			SourcePlatform: uint64(info.Client),
 			SourceChatID:   uint64(info.ChatId),
 			SenderID:       info.Sender,
@@ -38,7 +37,6 @@ func (storage *PGstorage) upsertQueryMessageAudit(messageInfos []*models.Message
 		PlaceholderFormat(squirrel.Dollar)
 	for _, info := range infos {
 		q = q.Values(
-			info.ID,
 			info.SourcePlatform,
 			info.SourceChatID,
 			info.SenderID,
