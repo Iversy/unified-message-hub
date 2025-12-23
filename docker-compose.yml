@@ -9,6 +9,12 @@ services:
       - redis_data:/data
     networks:
       - umh_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   postgres:
     image: citusdata/citus:12
@@ -24,6 +30,12 @@ services:
     restart: unless-stopped
     networks:
       - umh_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   worker1:
     image: citusdata/citus:12
@@ -34,6 +46,12 @@ services:
     restart: unless-stopped
     networks:
       - umh_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   worker2:
     image: citusdata/citus:12
@@ -44,7 +62,12 @@ services:
     restart: unless-stopped
     networks:
       - umh_net
-
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -61,7 +84,8 @@ services:
     networks:
       - umh_net
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   kafka:
     image: apache/kafka:latest
@@ -96,12 +120,11 @@ services:
     ports:
       - "${KAFKA_UI_PORT}:8080"
     environment:
-      - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=kafka:9094  # Используем внутренний порт
+      - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=kafka:9094
       - KAFKA_CLUSTERS_0_NAME=umh
       - KAFKA_UI_AUTH_ENABLED=false
     networks:
       - umh_net
-
 
 volumes:
   citus-coordinator-data:

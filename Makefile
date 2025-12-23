@@ -12,11 +12,12 @@ run:
 
 up:
 	docker-compose --env-file .env up -d
-back:
-	docker-compose down -v
-
+# 	sleep 3
+	docker exec -it $(COORDINATOR) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -c "SELECT master_add_node('$(WORKER1)', ${POSTGRES_PORT});"
+	docker exec -it $(COORDINATOR) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -c "SELECT master_add_node('$(WORKER2)', ${POSTGRES_PORT});"
+	${MAKE} migrate-up
 down:
-	docker-compose down
+	docker-compose down -v
 
 init-citus:
 	@echo "Adding worker nodes to the Citus coordinator..."
