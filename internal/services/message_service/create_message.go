@@ -7,5 +7,6 @@ import (
 )
 
 func (s *MessageService) CreateMessage(ctx context.Context, messageInfos []*models.Message) error {
+
 	return s.messageStorage.CreateMessage(ctx, messageInfos)
 }

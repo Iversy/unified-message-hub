@@ -7,4 +7,12 @@ packages:
             structname: "{{.InterfaceName}}"
         interfaces:
             MessageStorage:
-            MessageProducer:
+    github.com/Iversy/unified-message-hub/internal/api:
+        config:
+                dir: "{{.InterfaceDir}}/mocks"
+                filename: "mocks.go"
+                pkgname: "mocks"
+                structname: "{{.InterfaceName}}"
+        interfaces:
+            messageProducer:
+            messageService:

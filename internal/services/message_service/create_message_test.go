@@ -3,6 +3,7 @@ package messageservice
 import (
 	"context"
 	"errors"
+	"testing"
 
 	"github.com/Iversy/unified-message-hub/internal/models"
 	"github.com/Iversy/unified-message-hub/internal/services/message_service/mocks"
@@ -12,17 +13,15 @@ import (
 
 type MessageServiceSuite struct {
 	suite.Suite
-	ctx             context.Context
-	messageStorage  *mocks.MessageStorage
-	messageService  *MessageService
-	messageProducer *mocks.MessageProducer
+	ctx            context.Context
+	messageStorage *mocks.MessageStorage
+	messageService *MessageService
 }
 
 func (m *MessageServiceSuite) SetupTest() {
 	m.messageStorage = mocks.NewMessageStorage(m.T())
-	m.messageProducer = mocks.NewMessageProducer(m.T())
 	m.ctx = context.Background()
-	m.messageService = NewMessageService(m.ctx, m.messageStorage, m.messageProducer)
+	m.messageService = NewMessageService(m.ctx, m.messageStorage)
 }
 
 func (m *MessageServiceSuite) TestCreateSuccess() {
@@ -42,6 +41,7 @@ func (m *MessageServiceSuite) TestCreateSuccess() {
 	assert.NilError(m.T(), err)
 
 }
+
 func (m *MessageServiceSuite) TestCreateStorageError() {
 	messages := []*models.Message{
 		{
@@ -61,6 +61,7 @@ func (m *MessageServiceSuite) TestCreateStorageError() {
 	assert.ErrorIs(m.T(), err, wantErr)
 
 }
+
 func (m *MessageServiceSuite) TestCreateEmptyText() {
 	messages := []*models.Message{
 		{
@@ -71,7 +72,12 @@ func (m *MessageServiceSuite) TestCreateEmptyText() {
 			Timestamp: "2024-01-15T10:20:00Z",
 		},
 	}
+
 	err := m.messageService.CreateMessage(m.ctx, messages)
 	assert.Check(m.T(), err != nil)
 
+}
+
+func TestExampleTestSuite(t *testing.T) {
+	suite.Run(t, new(MessageServiceSuite))
 }

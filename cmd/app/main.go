@@ -18,7 +18,7 @@ func main() {
 	kafkaProducer := bootstrap.InitMessageProducer(cfg)
 	defer kafkaProducer.Close()
 
-	messageService := bootstrap.InitMessageService(storage, kafkaProducer)
+	messageService := bootstrap.InitMessageService(storage)
 	messageProcessor := bootstrap.InitMessageProcessor(messageService)
 	kafkaConsumer := bootstrap.InitMessageCreateConsumer(cfg, messageProcessor)
 	serviceAPI := bootstrap.InitMessageServiceAPI(messageService, kafkaProducer)
