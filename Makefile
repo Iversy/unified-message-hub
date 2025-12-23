@@ -1,4 +1,8 @@
 include .env
+
+copy:
+	cp env.cfg .env
+
 up:
 	docker-compose --env-file .env up -d
 back:
