@@ -10,12 +10,18 @@ type messageService interface {
 	CreateMessage(ctx context.Context, studentsInfos []*models.Message) error
 }
 
-type MessageProcessor struct {
-	messageService messageService
+type vkService interface {
+	SendBroadcast(message string) error
 }
 
-func NewMessageProcessor(messageService messageService) *MessageProcessor {
+type MessageProcessor struct {
+	messageService messageService
+	vkService      vkService
+}
+
+func NewMessageProcessor(messageService messageService, vkService vkService) *MessageProcessor {
 	return &MessageProcessor{
 		messageService: messageService,
+		vkService:      vkService,
 	}
 }

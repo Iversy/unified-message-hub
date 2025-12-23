@@ -19,3 +19,10 @@ redis:
 web:
   host: localhost
   port: 8080
+
+vk:
+  group_id: 234823684
+  admin_id: 205630058
+  welcome_text: Hello and welocme
+  timeout: 30s
+  delay: 400ms
