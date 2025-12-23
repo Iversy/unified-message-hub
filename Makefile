@@ -1,7 +1,14 @@
 include .env
 
+create-requests:
+	@echo "Plesae install requests module beforehand"
+	python3 ./scripts/spam.py
+
 copy:
 	cp env.cfg .env
+
+run:
+	go run ./cmd/app/main.go
 
 up:
 	docker-compose --env-file .env up -d
