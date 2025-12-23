@@ -32,6 +32,7 @@ func (storage *PGstorage) upsertQueryMessageAudit(messageInfos []*models.Message
 			Received_at:    info.Timestamp,
 		}
 	})
+
 	tableName := "message_audit"
 	q := squirrel.Insert(tableName).Columns(utils.GetStructTag(MessageAudit{})...).
 		PlaceholderFormat(squirrel.Dollar)

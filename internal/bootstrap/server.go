@@ -13,9 +13,6 @@ func AppRun(service_api *api.MessageServiceAPI, consumer *messageconsumer.Messag
 	if err := runAPIserver(service_api); err != nil {
 		panic(err)
 	}
-	// go func() {
-
-	// }()
 }
 
 func runAPIserver(mapi *api.MessageServiceAPI) error {

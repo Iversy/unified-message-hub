@@ -1,8 +1,6 @@
 include .env
 up:
 	docker-compose --env-file .env up -d
-# 	. .env && ./scripts/citus_coordinator.sh
-# 	sleep 3
 back:
 	docker-compose down -v
 

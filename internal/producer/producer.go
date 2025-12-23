@@ -24,8 +24,6 @@ func NewKafkaProducer(broker string, topic string) *KafkaProducer {
 		RequiredAcks: kafka.RequireAll,
 		Async:        false,
 		Compression:  kafka.Snappy,
-		// Logger:       kafka.LoggerFunc(func(s string, i ...interface{}) { log.Printf(s, i...) }),
-		// ErrorLogger:  kafka.LoggerFunc(func(s string, i ...interface{}) { log.Printf("ERROR: "+s, i...) }),
 	}
 	return &KafkaProducer{
 		writer: writer,

@@ -7,7 +7,6 @@ import (
 )
 
 type MessageStorage interface {
-	//GetStudentInfoByIDs(ctx context.Context, IDs []uint64) ([]*models.Message, error)
 	CreateMessage(ctx context.Context, messageInfos []*models.Message) error
 }
 

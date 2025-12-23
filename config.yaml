@@ -5,7 +5,6 @@ database:
   password: ${POSTGRES_PASSWORD}
   name: "go"
   ssl_mode: "disable"
-  migrations_path: "./internal/storage/pgstorage/migrations"
 
 kafka:
   host: ${HOST}
