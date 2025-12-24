@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/Iversy/unified-message-hub/internal/models"
 	"github.com/SevereCloud/vksdk/v3/api/params"
 )
 
@@ -21,7 +22,7 @@ func (v *VKService) SendBroadcast(message string) error {
 	successCount := 0
 	for _, userID := range userIDs {
 
-		err := v.sendMessage(userID, message)
+		err := v.SendMessage(userID, message)
 		if err != nil {
 			log.Printf("Рассылка завершена с ошибкой. Успешно: %d/%d", successCount, len(userIDs))
 			return fmt.Errorf("Ошибка отправки пользователю %d: %v", userID, err)
@@ -38,7 +39,18 @@ func (v *VKService) SendBroadcast(message string) error {
 	return nil
 }
 
-func (v *VKService) sendMessage(userID int, text string) error {
+func (v *VKService) SendMessageMulti(routes []*models.Route, text string) error {
+	for _, route := range routes {
+		chatID := route.ReceiverID
+		err := v.SendMessage(chatID, text)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (v *VKService) SendMessage(userID int, text string) error {
 	b := params.NewMessagesSendBuilder()
 	b.Message(text)
 	b.RandomID(0)

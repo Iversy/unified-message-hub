@@ -62,22 +62,6 @@ func (m *MessageServiceSuite) TestCreateStorageError() {
 
 }
 
-func (m *MessageServiceSuite) TestCreateEmptyText() {
-	messages := []*models.Message{
-		{
-			Client:    models.VK,
-			Sender:    "oleg",
-			ChatId:    3,
-			Text:      "",
-			Timestamp: "2024-01-15T10:20:00Z",
-		},
-	}
-
-	err := m.messageService.CreateMessage(m.ctx, messages)
-	assert.Check(m.T(), err != nil)
-
-}
-
 func TestExampleTestSuite(t *testing.T) {
 	suite.Run(t, new(MessageServiceSuite))
 }

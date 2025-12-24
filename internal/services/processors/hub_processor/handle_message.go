@@ -22,5 +22,9 @@ func (p *HubProcessor) HandleMessage(ctx context.Context, message *models.Messag
 		`,
 		message.Client, message.Sender, message.Text, message.Timestamp,
 	)
-	return p.vkService.SendBroadcast(msg)
+	routes, err := p.hubService.GetActiveRoutesBySourceChatID(ctx, message.ChatId) // TODO: filter receivers by keywords
+	if err != nil {
+		return err
+	}
+	return p.vkService.SendMessageMulti(routes, msg)
 }

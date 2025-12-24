@@ -28,7 +28,7 @@ func (v *VKService) Listen() {
 			log.Printf("preparing message: %v", message)
 
 			go v.SendBroadcast(message)
-			v.sendMessage(fromID, v.config.WelcomeText)
+			v.SendMessage(fromID, v.config.WelcomeText)
 		}
 	})
 
@@ -43,7 +43,7 @@ func (v *VKService) Listen() {
 
 		go func() {
 			time.Sleep(1 * time.Second)
-			v.sendMessage(userID, v.config.WelcomeText)
+			v.SendMessage(userID, v.config.WelcomeText)
 		}()
 	})
 

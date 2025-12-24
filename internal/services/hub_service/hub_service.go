@@ -9,6 +9,7 @@ import (
 type HubStorage interface {
 	CreateMessage(ctx context.Context, messageInfos []*models.Message) error
 	UpsertRoute(ctx context.Context, routes []*models.Route) error
+	GetActiveRoutesBySourceChatID(ctx context.Context, chatID int) ([]*models.Route, error)
 }
 
 type HubService struct {

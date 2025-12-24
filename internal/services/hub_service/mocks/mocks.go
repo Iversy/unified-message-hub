@@ -95,6 +95,74 @@ func (_c *HubStorage_CreateMessage_Call) RunAndReturn(run func(ctx context.Conte
 	return _c
 }
 
+// GetActiveRoutesBySourceChatID provides a mock function for the type HubStorage
+func (_mock *HubStorage) GetActiveRoutesBySourceChatID(ctx context.Context, chatID int) ([]*models.Route, error) {
+	ret := _mock.Called(ctx, chatID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetActiveRoutesBySourceChatID")
+	}
+
+	var r0 []*models.Route
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ([]*models.Route, error)); ok {
+		return returnFunc(ctx, chatID)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) []*models.Route); ok {
+		r0 = returnFunc(ctx, chatID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*models.Route)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, int) error); ok {
+		r1 = returnFunc(ctx, chatID)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// HubStorage_GetActiveRoutesBySourceChatID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetActiveRoutesBySourceChatID'
+type HubStorage_GetActiveRoutesBySourceChatID_Call struct {
+	*mock.Call
+}
+
+// GetActiveRoutesBySourceChatID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - chatID int
+func (_e *HubStorage_Expecter) GetActiveRoutesBySourceChatID(ctx interface{}, chatID interface{}) *HubStorage_GetActiveRoutesBySourceChatID_Call {
+	return &HubStorage_GetActiveRoutesBySourceChatID_Call{Call: _e.mock.On("GetActiveRoutesBySourceChatID", ctx, chatID)}
+}
+
+func (_c *HubStorage_GetActiveRoutesBySourceChatID_Call) Run(run func(ctx context.Context, chatID int)) *HubStorage_GetActiveRoutesBySourceChatID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *HubStorage_GetActiveRoutesBySourceChatID_Call) Return(routes []*models.Route, err error) *HubStorage_GetActiveRoutesBySourceChatID_Call {
+	_c.Call.Return(routes, err)
+	return _c
+}
+
+func (_c *HubStorage_GetActiveRoutesBySourceChatID_Call) RunAndReturn(run func(ctx context.Context, chatID int) ([]*models.Route, error)) *HubStorage_GetActiveRoutesBySourceChatID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // UpsertRoute provides a mock function for the type HubStorage
 func (_mock *HubStorage) UpsertRoute(ctx context.Context, routes []*models.Route) error {
 	ret := _mock.Called(ctx, routes)

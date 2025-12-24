@@ -65,7 +65,7 @@ func (storage *PGstorage) GetAllRoutes(ctx context.Context) ([]*models.Route, er
 	return storage.queryGetRoutes(ctx, query)
 }
 
-func (storage *PGstorage) GetActiveRoutesByReceiverID(ctx context.Context, receiverID string) ([]*models.Route, error) {
+func (storage *PGstorage) GetActiveRoutesByReceiverID(ctx context.Context, receiverID int) ([]*models.Route, error) {
 	query := squirrel.Select("*").
 		From("routing_rules").
 		Where(squirrel.Eq{
@@ -77,7 +77,19 @@ func (storage *PGstorage) GetActiveRoutesByReceiverID(ctx context.Context, recei
 	return storage.queryGetRoutes(ctx, query)
 }
 
-func (storage *PGstorage) GetRouteByID(ctx context.Context, id string) (*models.Route, error) {
+func (storage *PGstorage) GetActiveRoutesBySourceChatID(ctx context.Context, chatID int) ([]*models.Route, error) {
+	query := squirrel.Select("*").
+		From("routing_rules").
+		Where(squirrel.Eq{
+			"source_chat_id": chatID,
+			"is_active":      true,
+		}).
+		PlaceholderFormat(squirrel.Dollar)
+
+	return storage.queryGetRoutes(ctx, query)
+}
+
+func (storage *PGstorage) GetRouteByID(ctx context.Context, id int) (*models.Route, error) {
 	query := squirrel.Select("*").
 		From("routing_rules").
 		Where(squirrel.Eq{"id": id}).
