@@ -10,6 +10,7 @@ kafka:
   host: localhost
   port: 9092
   message_create_topic_name: message_create_topic_name
+  route_create_topic_name: route_create_topic_name
 
 redis:
   host: localhost

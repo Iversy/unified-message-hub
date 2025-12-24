@@ -25,6 +25,19 @@ type Message struct {
 	Timestamp string `json:"timestamp"`
 }
 
+type Route struct {
+	ID           int      `json:"id"`
+	Name         string   `json:"name"`
+	SourceChatID int      `json:"source_chat_id"`
+	ReceiverID   int      `json:"receiver_id"`
+	Keywords     []string `json:"keywords"`
+	IsActive     bool     `json:"is_active"`
+}
+
 func NewMessage() *Message {
 	return &Message{}
+}
+
+func NewRoute() *Route {
+	return &Route{}
 }

@@ -1,4 +1,4 @@
-package messageconsumer
+package routeconsumer
 
 import (
 	"context"
@@ -10,10 +10,10 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-func (c *MessageCreateConsumer) Consume(ctx context.Context) {
+func (c *RouteCreateConsumer) Consume(ctx context.Context) {
 	r := kafka.NewReader(kafka.ReaderConfig{
 		Brokers:           c.kafkaBroker,
-		GroupID:           "Message_group",
+		GroupID:           "Route_group",
 		Topic:             c.topicName,
 		HeartbeatInterval: 3 * time.Second,
 		SessionTimeout:    30 * time.Second,
@@ -23,15 +23,15 @@ func (c *MessageCreateConsumer) Consume(ctx context.Context) {
 	for {
 		msg, err := r.ReadMessage(ctx)
 		if err != nil {
-			slog.Error("MessageCreateConsumer.consume error", "error", err.Error())
+			slog.Error("MessageInfoUpsertConsumer.consume error", "error", err.Error())
 		}
-		var message *models.Message
-		err = json.Unmarshal(msg.Value, &message)
+		var route *models.Route
+		err = json.Unmarshal(msg.Value, &route)
 		if err != nil {
 			slog.Error("parse", "error", err)
 			continue
 		}
-		err = c.messageProcessor.HandleMessage(ctx, message)
+		err = c.routeProcessor.HandleRoute(ctx, route)
 		if err != nil {
 			slog.Error("Handle", "error", err)
 		}

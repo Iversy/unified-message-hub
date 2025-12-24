@@ -26,10 +26,10 @@ init-citus:
 	@echo "Worker nodes added successfully."
 
 create-migrations:
-	./migrate create -ext=sql -dir=internal/storage/pgstorage/migrations -seq init
+	migrate create -ext=sql -dir=internal/storage/pgstorage/migrations -seq init
 
 migrate-up:
-	./migrate -path=internal/storage/pgstorage/migrations -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" -verbose up
+	migrate -path=internal/storage/pgstorage/migrations -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" -verbose up
 
 migrate-down:
-	./migrate -path=internal/storage/pgstorage/migrations -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" -verbose down
+	migrate -path=internal/storage/pgstorage/migrations -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" -verbose down

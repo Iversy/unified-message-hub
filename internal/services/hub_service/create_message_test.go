@@ -1,4 +1,4 @@
-package messageservice
+package hubservice
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/Iversy/unified-message-hub/internal/models"
-	"github.com/Iversy/unified-message-hub/internal/services/message_service/mocks"
+	"github.com/Iversy/unified-message-hub/internal/services/hub_service/mocks"
 	"github.com/stretchr/testify/suite"
 	"gotest.tools/v3/assert"
 )
@@ -14,14 +14,14 @@ import (
 type MessageServiceSuite struct {
 	suite.Suite
 	ctx            context.Context
-	messageStorage *mocks.MessageStorage
-	messageService *MessageService
+	messageStorage *mocks.HubStorage
+	messageService *HubService
 }
 
 func (m *MessageServiceSuite) SetupTest() {
-	m.messageStorage = mocks.NewMessageStorage(m.T())
+	m.messageStorage = mocks.NewHubStorage(m.T())
 	m.ctx = context.Background()
-	m.messageService = NewMessageService(m.ctx, m.messageStorage)
+	m.messageService = NewHubService(m.ctx, m.messageStorage)
 }
 
 func (m *MessageServiceSuite) TestCreateSuccess() {

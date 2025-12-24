@@ -15,13 +15,13 @@ func InspectStruct(s interface{}) error {
 		return fmt.Errorf("Not a struct")
 	}
 
-	fmt.Printf("Struct has %d fields:\n", t.NumField())
+	log.Printf("Struct has %d fields:\n", t.NumField())
 
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		value := v.Field(i)
 
-		fmt.Printf("  %d. Name: %s, Type: %v, Value: %v, Tag: %v\n",
+		log.Printf("  %d. Name: %s, Type: %v, Value: %v, Tag: %v\n",
 			i+1, field.Name, field.Type, value.Interface(), field.Tag)
 	}
 	return nil

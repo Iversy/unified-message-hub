@@ -7,7 +7,7 @@ import (
 )
 
 type messageProcessor interface {
-	Handle(ctx context.Context, messageInfo *models.Message) error
+	HandleMessage(ctx context.Context, messageInfo *models.Message) error
 }
 
 type MessageCreateConsumer struct {

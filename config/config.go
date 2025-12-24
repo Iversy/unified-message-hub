@@ -28,6 +28,7 @@ type KafkaConfig struct {
 	Host                   string `yaml:"host"`
 	Port                   string `yaml:"port"`
 	MessageCreateTopicName string `yaml:"message_create_topic_name"`
+	RouteCreateTopicName   string `yaml:"route_create_topic_name"`
 }
 
 type Web struct {

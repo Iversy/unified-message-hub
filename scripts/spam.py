@@ -3,7 +3,7 @@ import json
 from datetime import datetime, timedelta
 
 # Define the URL and headers
-url = "http://localhost:8080/api/send"
+url = "http://localhost:8080/api/send/message"
 headers = {
     "Content-Type": "application/json"
 }
@@ -27,4 +27,4 @@ def send_requests(num_requests):
         print(f"Request {i + 1}: Status Code - {response.status_code}, Response - {response.text}")
 
 # Call the function to send 1000 requests
-send_requests(10)
+send_requests(1)

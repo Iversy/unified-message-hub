@@ -11,3 +11,8 @@ func InitMessageProducer(cfg *config.Config) *producer.KafkaProducer {
 	broker := fmt.Sprintf("%v:%v", cfg.Kafka.Host, cfg.Kafka.Port)
 	return producer.NewKafkaProducer(broker, cfg.Kafka.MessageCreateTopicName)
 }
+
+func InitRouteProducer(cfg *config.Config) *producer.KafkaProducer {
+	broker := fmt.Sprintf("%v:%v", cfg.Kafka.Host, cfg.Kafka.Port)
+	return producer.NewKafkaProducer(broker, cfg.Kafka.RouteCreateTopicName)
+}

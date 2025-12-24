@@ -5,10 +5,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (mapi *MessageServiceAPI) PostMessage(c *gin.Context) {
+func (mapi *HubServiceAPI) PostMessage(c *gin.Context) {
 	var newMessage models.Message = *models.NewMessage()
 	if err := c.BindJSON(&newMessage); err != nil {
 		return
 	}
-	mapi.Handle(&newMessage)
+	mapi.HandleMessage(&newMessage)
+}
+
+func (mapi *HubServiceAPI) PostRoute(c *gin.Context) {
+	var newRoute models.Route = *models.NewRoute()
+	if err := c.BindJSON(&newRoute); err != nil {
+		return
+	}
+	mapi.HandleRoute(&newRoute)
 }

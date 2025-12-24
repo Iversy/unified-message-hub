@@ -1,4 +1,4 @@
-package messageprocessor
+package hubprocessor
 
 import (
 	"context"
@@ -7,9 +7,9 @@ import (
 	"github.com/Iversy/unified-message-hub/internal/models"
 )
 
-func (p *MessageProcessor) Handle(ctx context.Context, message *models.Message) error {
+func (p *HubProcessor) HandleMessage(ctx context.Context, message *models.Message) error {
 
-	err := p.messageService.CreateMessage(ctx, []*models.Message{message})
+	err := p.hubService.CreateMessage(ctx, []*models.Message{message})
 	if err != nil {
 		return err
 	}

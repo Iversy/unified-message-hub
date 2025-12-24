@@ -21,13 +21,15 @@ func main() {
 	go bootstrap.VKListen(vkService)
 
 	storage := bootstrap.InitPGStorage(cfg)
-	kafkaProducer := bootstrap.InitMessageProducer(cfg)
-	defer kafkaProducer.Close()
+	messageProducer := bootstrap.InitMessageProducer(cfg)
+	routeProducer := bootstrap.InitRouteProducer(cfg)
+	defer messageProducer.Close()
 
-	messageService := bootstrap.InitMessageService(storage)
-	messageProcessor := bootstrap.InitMessageProcessor(messageService, vkService)
-	kafkaConsumer := bootstrap.InitMessageCreateConsumer(cfg, messageProcessor)
-	serviceAPI := bootstrap.InitMessageServiceAPI(messageService, kafkaProducer)
+	messageService := bootstrap.InitHubService(storage)
+	hubProcessor := bootstrap.InitMessageProcessor(messageService, vkService)
+	messageConsumer := bootstrap.InitMessageCreateConsumer(cfg, hubProcessor)
+	routeConsumer := bootstrap.InitRouteCreateConsumer(cfg, hubProcessor)
+	serviceAPI := bootstrap.InitHubServiceAPI(messageService, messageProducer, routeProducer)
 
-	bootstrap.AppRun(serviceAPI, kafkaConsumer)
+	bootstrap.AppRun(serviceAPI, messageConsumer, routeConsumer)
 }

@@ -47,3 +47,54 @@ func (storage *PGstorage) upsertQueryMessageAudit(messageInfos []*models.Message
 	}
 	return q
 }
+
+func (storage *PGstorage) UpsertRoute(ctx context.Context, routes []*models.Route) error {
+	query := storage.upsertQueryRoutingRules(routes)
+	queryText, args, err := query.ToSql()
+	if err != nil {
+		return err
+	}
+	_, err = storage.db.Exec(ctx, queryText, args...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (storage *PGstorage) upsertQueryRoutingRules(messageInfos []*models.Route) squirrel.Sqlizer {
+	infos := lo.Map(messageInfos, func(info *models.Route, _ int) *RoutingRules {
+		return &RoutingRules{
+			ID:           info.ID,
+			Name:         info.Name,
+			SourceChatID: info.SourceChatID,
+			ReceiverID:   info.ReceiverID,
+			Keywords:     info.Keywords,
+			IsActive:     info.IsActive,
+		}
+	})
+
+	tableName := "routing_rules"
+	q := squirrel.Insert(tableName).Columns(utils.GetStructTag(RoutingRules{})...).
+		PlaceholderFormat(squirrel.Dollar)
+	for _, info := range infos {
+		q = q.Values(
+			info.ID,
+			info.Name,
+			info.SourceChatID,
+			info.ReceiverID,
+			info.Keywords,
+			info.IsActive,
+		)
+	}
+	q = q.Suffix(`
+		ON CONFLICT (id) 
+		DO UPDATE SET 
+			name = EXCLUDED.name,
+			source_chat_id = EXCLUDED.source_chat_id,
+			receiver_id = EXCLUDED.receiver_id,
+			keywords = EXCLUDED.keywords,
+			is_active = EXCLUDED.is_active
+	`)
+
+	return q
+}
