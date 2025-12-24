@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	"github.com/Iversy/unified-message-hub/config"
-	vkservice "github.com/Iversy/unified-message-hub/internal/services/vk_service"
+	vkservice "github.com/Iversy/unified-message-hub/internal/services/platforms/vk_service"
 	"github.com/SevereCloud/vksdk/v3/api"
 	"github.com/SevereCloud/vksdk/v3/longpoll-bot"
 )
