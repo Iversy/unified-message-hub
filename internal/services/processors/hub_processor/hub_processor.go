@@ -12,19 +12,19 @@ type hubService interface {
 	GetActiveRoutesBySourceChatID(ctx context.Context, chatID int) ([]*models.Route, error)
 }
 
-type vkService interface {
+type platformService interface {
 	SendBroadcast(message string) error
 	SendMessageMulti(routes []*models.Route, text string) error
 }
 
 type HubProcessor struct {
-	hubService hubService
-	vkService  vkService // мб сделать ещё слой абстракции
+	hubService      hubService
+	platformService platformService
 }
 
-func NewHubProcessor(hubService hubService, vkService vkService) *HubProcessor {
+func NewHubProcessor(hubService hubService, platformService platformService) *HubProcessor {
 	return &HubProcessor{
-		hubService: hubService,
-		vkService:  vkService,
+		hubService:      hubService,
+		platformService: platformService,
 	}
 }

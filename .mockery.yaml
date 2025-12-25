@@ -16,3 +16,13 @@ packages:
         interfaces:
             messageProducer:
             hubService:
+            routeProducer:
+    github.com/Iversy/unified-message-hub/internal/services/processors/hub_processor:
+        config:
+                    dir: "{{.InterfaceDir}}/mocks"
+                    filename: "mocks.go"
+                    pkgname: "mocks"
+                    structname: "{{.InterfaceName}}"
+        interfaces:
+            hubService:
+            platformService:

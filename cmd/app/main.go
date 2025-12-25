@@ -24,6 +24,7 @@ func main() {
 	messageProducer := bootstrap.InitMessageProducer(cfg)
 	routeProducer := bootstrap.InitRouteProducer(cfg)
 	defer messageProducer.Close()
+	defer routeProducer.Close()
 
 	messageService := bootstrap.InitHubService(storage)
 	hubProcessor := bootstrap.InitMessageProcessor(messageService, vkService)

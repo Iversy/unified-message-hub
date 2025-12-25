@@ -35,5 +35,5 @@ func (p *HubProcessor) HandleMessage(ctx context.Context, message *models.Messag
 	//		return err
 	//	}
 	//}
-	return p.vkService.SendMessageMulti(routes, msg)
+	return p.platformService.SendMessageMulti(routes, msg)
 }
