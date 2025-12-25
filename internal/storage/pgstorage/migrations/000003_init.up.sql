@@ -1,14 +1,16 @@
-CREATE TABLE platform_connections (
-    id BIGSERIAL PRIMARY KEY,
-    platform VARCHAR(20) NOT NULL,           
-    connection_name VARCHAR(255) NOT NULL,   
-    credentials JSONB NOT NULL,              
-    is_active BOOLEAN DEFAULT true,
-    last_sync_at TIMESTAMPTZ,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-SELECT create_distributed_table(
-    'platform_connections',
-     'id'
-    );
+DO $$
+DECLARE
+    i INTEGER;
+BEGIN
+    FOR i IN 1..512 LOOP
+            EXECUTE format('
+                CREATE TABLE IF NOT EXISTS schema_%s.routing_rules (
+                    id BIGSERIAL PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL,
+                    source_chat_id BIGINT NOT NULL,
+                    receiver_id BIGINT NOT NULL,
+                    keywords JSONB DEFAULT ''[]'',
+                    is_active BOOLEAN DEFAULT true
+                )', LPAD(i::text, 3, '0'));
+    END LOOP;
+END $$;

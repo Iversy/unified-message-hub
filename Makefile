@@ -13,10 +13,9 @@ run:
 up:
 	docker-compose --env-file .env up -d
 # 	sleep 3
-	docker exec -it $(COORDINATOR) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -c "SELECT master_add_node('$(WORKER1)', ${POSTGRES_PORT});"
-	docker exec -it $(COORDINATOR) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -c "SELECT master_add_node('$(WORKER2)', ${POSTGRES_PORT});"
-	${MAKE} migrate-up
 down:
+
+back:
 	docker-compose down -v
 
 init-citus:

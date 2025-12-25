@@ -1,3 +1,14 @@
+# Rules
+curl -X POST http://localhost:8080/api/send/route \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": 1,
+    "name": "Best chat",
+    "source_chat_id": 666,
+    "receiver_id": 205630058,
+    "keywords": [],
+    "is_active": true
+  }'
 # Best Chat
 curl -X POST http://localhost:8080/api/send/message \
   -H "Content-Type: application/json" \
@@ -17,15 +28,4 @@ curl -X POST http://localhost:8080/api/send/message \
     "chat_id": 111,
     "text": "Hello Dear Friend! We wasnt together for long but i hope you still remember me...",
     "timestamp": "2024-01-15T10:20:00Z"
-  }'
-# Rules
-curl -X POST http://localhost:8080/api/send/route \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": 1,
-    "name": "Best chat",
-    "source_chat_id": 666,
-    "receiver_id": 205630058,
-    "keywords": [],
-    "is_active": true
   }'

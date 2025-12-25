@@ -2,6 +2,8 @@ package pgstorage
 
 import (
 	"context"
+	"fmt"
+	"log"
 
 	"github.com/Iversy/unified-message-hub/internal/models"
 	"github.com/Iversy/unified-message-hub/internal/utils"
@@ -10,19 +12,31 @@ import (
 )
 
 func (storage *PGstorage) CreateMessage(ctx context.Context, messageInfos []*models.Message) error {
-	query := storage.upsertQueryMessageAudit(messageInfos)
-	queryText, args, err := query.ToSql()
-	if err != nil {
-		return err
+	messageGroups := groupByShard(messageInfos, func(m *models.Message) uint64 {
+		return uint64(m.ChatId)
+	})
+	log.Println("Starting creating messages...")
+	for shardSchema, messages := range messageGroups {
+		query := storage.upsertQueryMessageAudit(messages, shardSchema)
+		queryText, args, err := query.ToSql()
+		if err != nil {
+			return fmt.Errorf("shard %s: %w", shardSchema, err)
+		}
+
+		_, err = storage.db.Exec(ctx, queryText, args...)
+		if err != nil {
+			return fmt.Errorf("shard %s: %w", shardSchema, err)
+		}
 	}
-	_, err = storage.db.Exec(ctx, queryText, args...)
-	if err != nil {
-		return err
-	}
+	log.Println("Done creating messages...")
+
 	return nil
 }
 
-func (storage *PGstorage) upsertQueryMessageAudit(messageInfos []*models.Message) squirrel.Sqlizer {
+func (storage *PGstorage) upsertQueryMessageAudit(
+	messageInfos []*models.Message,
+	shardSchema string,
+) squirrel.Sqlizer {
 	infos := lo.Map(messageInfos, func(info *models.Message, _ int) *MessageAudit {
 		return &MessageAudit{
 			SourcePlatform: uint64(info.Client),
@@ -33,9 +47,11 @@ func (storage *PGstorage) upsertQueryMessageAudit(messageInfos []*models.Message
 		}
 	})
 
-	tableName := "message_audit"
+	tableName := fmt.Sprintf("%s.message_audit", shardSchema)
+
 	q := squirrel.Insert(tableName).Columns(utils.GetStructTag(MessageAudit{})...).
 		PlaceholderFormat(squirrel.Dollar)
+
 	for _, info := range infos {
 		q = q.Values(
 			info.SourcePlatform,
@@ -47,22 +63,33 @@ func (storage *PGstorage) upsertQueryMessageAudit(messageInfos []*models.Message
 	}
 	return q
 }
-
 func (storage *PGstorage) UpsertRoute(ctx context.Context, routes []*models.Route) error {
-	query := storage.upsertQueryRoutingRules(routes)
-	queryText, args, err := query.ToSql()
-	if err != nil {
-		return err
+	routeGroups := groupByShard(routes, func(r *models.Route) uint64 {
+		return uint64(r.SourceChatID)
+	})
+	log.Println("Starting upsert routes...")
+	for shardSchema, routes := range routeGroups {
+		query := storage.upsertQueryRoutingRules(routes, shardSchema)
+		queryText, args, err := query.ToSql()
+		if err != nil {
+			return fmt.Errorf("shard %s: %w", shardSchema, err)
+		}
+
+		_, err = storage.db.Exec(ctx, queryText, args...)
+		if err != nil {
+			return fmt.Errorf("shard %s: %w", shardSchema, err)
+		}
 	}
-	_, err = storage.db.Exec(ctx, queryText, args...)
-	if err != nil {
-		return err
-	}
+	log.Println("Done upserting routes...")
+
 	return nil
 }
 
-func (storage *PGstorage) upsertQueryRoutingRules(messageInfos []*models.Route) squirrel.Sqlizer {
-	infos := lo.Map(messageInfos, func(info *models.Route, _ int) *RoutingRules {
+func (storage *PGstorage) upsertQueryRoutingRules(
+	routes []*models.Route,
+	shardSchema string,
+) squirrel.Sqlizer {
+	infos := lo.Map(routes, func(info *models.Route, _ int) *RoutingRules {
 		return &RoutingRules{
 			ID:           info.ID,
 			Name:         info.Name,
@@ -73,9 +100,11 @@ func (storage *PGstorage) upsertQueryRoutingRules(messageInfos []*models.Route) 
 		}
 	})
 
-	tableName := "routing_rules"
+	tableName := fmt.Sprintf("%s.routing_rules", shardSchema)
+
 	q := squirrel.Insert(tableName).Columns(utils.GetStructTag(RoutingRules{})...).
 		PlaceholderFormat(squirrel.Dollar)
+
 	for _, info := range infos {
 		q = q.Values(
 			info.ID,
@@ -86,15 +115,16 @@ func (storage *PGstorage) upsertQueryRoutingRules(messageInfos []*models.Route) 
 			info.IsActive,
 		)
 	}
-	q = q.Suffix(`
-		ON CONFLICT (id) 
-		DO UPDATE SET 
-			name = EXCLUDED.name,
-			source_chat_id = EXCLUDED.source_chat_id,
-			receiver_id = EXCLUDED.receiver_id,
-			keywords = EXCLUDED.keywords,
-			is_active = EXCLUDED.is_active
-	`)
+
+	q = q.Suffix(fmt.Sprintf(`
+        ON CONFLICT (id) 
+        DO UPDATE SET 
+            name = EXCLUDED.name,
+            source_chat_id = EXCLUDED.source_chat_id,
+            receiver_id = EXCLUDED.receiver_id,
+            keywords = EXCLUDED.keywords,
+            is_active = EXCLUDED.is_active
+    `))
 
 	return q
 }
